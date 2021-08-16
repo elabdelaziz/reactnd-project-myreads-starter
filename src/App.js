@@ -3,6 +3,8 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import  Search  from './search'
 import Home from './home'
+import DisplayAll from './displayAll'
+import BookList from './categoryRows'
 
 class BooksApp extends React.Component {
   state = {
@@ -25,12 +27,14 @@ class BooksApp extends React.Component {
   
 
   render() {
-
+    console.log(this.state.books)
     return (
       
         <div>
           <Search setSearchPage={this.setSearchPage} />
-          <Home setSearchPage={this.setSearchPage} />
+          {/* <Home setSearchPage={this.setSearchPage} /> */}
+          <BookList books={this.state.books}/>
+
         )
       </div>
     )
