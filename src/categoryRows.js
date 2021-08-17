@@ -3,6 +3,7 @@ import BookRows from './bookRows';
 
 const CategoryRows = props => {
     const books = props.books;
+    const changeShelf = props.changeShelf
     const shelfTypes = [
       { type: 'currentlyReading', title: 'Currently Reading' },
       { type: 'wantToRead', title: 'Want to Read' },
@@ -24,7 +25,7 @@ const CategoryRows = props => {
                     <div className="bookshelf" key={index}>
                         <h2 className="bookshelf-title">{shelfCategory}</h2>
                         <div className="bookshelf-books">
-                                <BookRows books={books} shelfCategory={shelfCategory}/>
+                                <BookRows books={books} shelfCategory={shelfCategory} changeShelf={changeShelf}/>
                         </div>
                     </div>
                 )

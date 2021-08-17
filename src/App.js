@@ -16,21 +16,34 @@ class BooksApp extends React.Component {
     showSearchPage: false
   }
 
+  
+
   setSearchPage = (searchPageState) => this.setState({showSearchPage: searchPageState})
 
   componentDidMount() {
-    // get books on load
     BooksAPI.getAll().then(books => this.setState({ books }));
   }
   
 
+  requestShelfUpdate = (bookToUpdate, newShelf) => {
+    BooksAPI.update(bookToUpdate, newShelf).then(() => {
+      //  bookToUpdate.shelf = newShelf;
+        // console.log(this.state.books)
+      //  this.setState(prevState => ({
+      //    books: prevState.books.filter(book => book.id !== bookToUpdate.id || book.id === bookToUpdate.id)
+      //  }))
+      BooksAPI.getAll().then(books => this.setState({ books }));
+     })
+   }
+
   render() {
+    // console.log(books)
     console.log(this.state.books)
     return (
       
         <div className="app">
           <Search setSearchPage={this.setSearchPage} />
-          <CategoryRows books={this.state.books}/>
+          <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
 
         )
       </div>

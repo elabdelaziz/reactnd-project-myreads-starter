@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import UpdateShelf from './updateShelf';
 
 class BookRows extends Component {
     render() { 
-        const { books, shelfCategory }  = this.props
+        const { books, shelfCategory, changeShelf }  = this.props
         return (
 
             
@@ -12,23 +13,16 @@ class BookRows extends Component {
               const bookImg = book.imageLinks.thumbnail
               const authors = book.authors
 
-            //   console.log(shelfCategory)
+              console.log(shelfCategory)
+              console.log(book.shelf)
             if (book.shelf === shelfCategory) {
                 return (
-                    <li>
+                    <li key={book.authors}>
                       <div className="book">
                         <div className="book-top">
                           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${bookImg})` }}></div>
-                            <div className="book-shelf-changer">
-                                <select>
-                                  <option value="move" disabled>Move to...</option>
-                                  <option value="currentlyReading">Currently Reading</option>
-                                  <option value="wantToRead">Want to Read</option>
-                                  <option value="read">Read</option>
-                                  <option value="none">None</option>
-                                </select>
-                              </div>
-                              </div>
+                            <UpdateShelf book={book} changeShelf={changeShelf}/>
+                        </div>
                           <div className="book-title">{bookName}</div>
                           <div className="book-authors">{authors}</div>
                         
@@ -36,9 +30,9 @@ class BookRows extends Component {
                     </li>
                 );
             }
-            else {
-              return undefined;
-            } 
+            // else {
+              return null;
+            // } 
               
             })}
           </ol>
