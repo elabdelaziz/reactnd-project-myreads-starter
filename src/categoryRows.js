@@ -1,7 +1,7 @@
 import React from 'react';
 import BookRows from './bookRows';
 
-const BookList = props => {
+const CategoryRows = props => {
     const books = props.books;
     const shelfTypes = [
       { type: 'currentlyReading', title: 'Currently Reading' },
@@ -13,6 +13,7 @@ const BookList = props => {
         <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
+            </div>
         <div className="list-books-content">
             <div>
             {shelfTypes.map((shelf, index) => {
@@ -23,9 +24,7 @@ const BookList = props => {
                     <div className="bookshelf" key={index}>
                         <h2 className="bookshelf-title">{shelfCategory}</h2>
                         <div className="bookshelf-books">
-                            <ol className="books-grid">
                                 <BookRows books={books} shelfCategory={shelfCategory}/>
-                            </ol>
                         </div>
                     </div>
                 )
@@ -34,7 +33,6 @@ const BookList = props => {
         </div>
         </div>
         </div>
-        </div>
      );
 }  
-export default BookList
+export default CategoryRows

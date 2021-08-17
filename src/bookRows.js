@@ -6,7 +6,7 @@ class BookRows extends Component {
         return (
 
             
-          <div>
+          <ol className="books-grid">
             {books.map((book) => {
               const bookName = book.title
               const bookImg = book.imageLinks.thumbnail
@@ -28,9 +28,10 @@ class BookRows extends Component {
                                   <option value="none">None</option>
                                 </select>
                               </div>
+                              </div>
                           <div className="book-title">{bookName}</div>
                           <div className="book-authors">{authors}</div>
-                        </div>
+                        
                       </div>
                     </li>
                 );
@@ -40,7 +41,7 @@ class BookRows extends Component {
             } 
               
             })}
-          </div>
+          </ol>
             
         )
         }

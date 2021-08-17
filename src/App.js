@@ -2,9 +2,7 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import  Search  from './search'
-import Home from './home'
-import DisplayAll from './displayAll'
-import BookList from './categoryRows'
+import CategoryRows from './categoryRows'
 
 class BooksApp extends React.Component {
   state = {
@@ -30,10 +28,9 @@ class BooksApp extends React.Component {
     console.log(this.state.books)
     return (
       
-        <div>
+        <div className="app">
           <Search setSearchPage={this.setSearchPage} />
-          {/* <Home setSearchPage={this.setSearchPage} /> */}
-          <BookList books={this.state.books}/>
+          <CategoryRows books={this.state.books}/>
 
         )
       </div>
