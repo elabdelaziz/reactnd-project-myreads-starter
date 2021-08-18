@@ -8,6 +8,7 @@ const CategoryRows = props => {
       { type: 'currentlyReading', title: 'Currently Reading' },
       { type: 'wantToRead', title: 'Want to Read' },
       { type: 'read', title: 'Read' }
+    //   { type: 'none', title: 'none' }
     ];
 
     return ( 

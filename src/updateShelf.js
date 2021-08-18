@@ -10,9 +10,8 @@ class UpdateShelf extends Component {
         }
         return ( 
             <div className="book-shelf-changer">
-                <select onChange={updateShelfApi}>
+                <select onChange={updateShelfApi} defaultValue={'move'}>
                     <option value="move" disabled>Move to...</option>
-                    {/* <option value="test" >test</option> */}
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
                     <option value="read">Read</option>
