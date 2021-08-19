@@ -3,27 +3,33 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import  Search  from './search'
 import CategoryRows from './categoryRows'
+import {Route} from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
     books: [],
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false
-  }
-
-  
-
-  setSearchPage = (searchPageState) => this.setState({showSearchPage: searchPageState})
+    searchedQuery: '',
+    displayedBooks: []
+  };
 
   componentDidMount() {
     BooksAPI.getAll().then(books => this.setState({ books }));
   }
-  
+
+  handleFilterTextChange = (filterText) => {
+    this.setState({
+      searchedQuery: filterText
+    });
+
+    BooksAPI.search(this.state.searchedQuery, 20).then(queryBook => {
+      // console.log(displayedBooks)
+      queryBook === undefined || queryBook.length === 0 ?
+      this.setState({ displayedBooks: [] }) :
+      this.setState({ displayedBooks:  queryBook})
+      
+  })
+  }
+
 
   requestShelfUpdate = (bookToUpdate, newShelf) => {
     BooksAPI.update(bookToUpdate, newShelf).then(() => {
@@ -31,19 +37,25 @@ class BooksApp extends React.Component {
      })
    }
    
+   
   render() {
-    // console.log(books)
-    console.log(this.state.books)
+    // BooksAPI.search('b',20).then(books => console.log(books))
+    // console.log(this.state.displayedBooks)
+    // console.log(this.state.searchedQuery)
     return (
-      
         <div className="app">
-          <Search setSearchPage={this.setSearchPage} />
-          <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
-
-        )
+          <Route exact path='/' render={() => (
+            <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
+          )}/>
+          <Route exact path='/search' render={() => (
+            <Search onFilterTextChange={this.handleFilterTextChange}
+             displayedBooks={this.state.displayedBooks} 
+             changeShelf={this.requestShelfUpdate}
+             searchedQuery={this.props.searchedQuery}
+             />
+          )}/>
       </div>
     )
   }
 }
-
 export default BooksApp
