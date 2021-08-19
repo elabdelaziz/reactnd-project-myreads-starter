@@ -4,12 +4,14 @@ import './App.css'
 import  Search  from './search'
 import CategoryRows from './categoryRows'
 import {Route} from 'react-router-dom'
+import ErrorBoundary from './errorBoundary'
 
 class BooksApp extends React.Component {
   state = {
     books: [],
     searchedQuery: '',
-    displayedBooks: []
+    displayedBooks: [],
+    displayError: false
   };
 
   componentDidMount() {
@@ -21,15 +23,28 @@ class BooksApp extends React.Component {
       searchedQuery: filterText
     });
 
-    BooksAPI.search(this.state.searchedQuery, 20).then(queryBook => {
-      // console.log(displayedBooks)
-      queryBook === undefined || queryBook.length === 0 ?
-      this.setState({ displayedBooks: [] }) :
-      this.setState({ displayedBooks:  queryBook})
-      
-  })
-  }
+    if (!this.state.searchedQuery) {
+      this.setState({ displayedBooks: [], displayError: false })
+    }
+    else {
+      BooksAPI.search(this.state.searchedQuery, 20).then(queryBook => {
+        // console.log(displayedBooks)
+        queryBook.error?
+        this.setState({ displayedBooks: [], displayError: true }) :
+        this.setState({ displayedBooks:  queryBook, displayError: false})
 
+        !this.state.searchedQuery && this.setState({ displayedBooks: [], displayError: false })
+        
+    }).catch(error => {
+      this.setState({
+        displayedBooks: [],
+        displayError: true
+      })
+      console.log(error, this.state.displayError)
+    })
+    }
+    
+  }
 
   requestShelfUpdate = (bookToUpdate, newShelf) => {
     BooksAPI.update(bookToUpdate, newShelf).then(() => {
@@ -37,22 +52,19 @@ class BooksApp extends React.Component {
      })
    }
    
-   
   render() {
-    // BooksAPI.search('b',20).then(books => console.log(books))
-    // console.log(this.state.displayedBooks)
-    // console.log(this.state.searchedQuery)
     return (
         <div className="app">
           <Route exact path='/' render={() => (
             <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
           )}/>
-          <Route exact path='/search' render={() => (
-            <Search onFilterTextChange={this.handleFilterTextChange}
-             displayedBooks={this.state.displayedBooks} 
-             changeShelf={this.requestShelfUpdate}
-             searchedQuery={this.props.searchedQuery}
-             />
+          <Route path='/search' render={() => (
+              <Search onFilterTextChange={this.handleFilterTextChange}
+              displayedBooks={this.state.displayedBooks} 
+              changeShelf={this.requestShelfUpdate}
+              searchedQuery={this.props.searchedQuery}
+              displayError={this.state.displayError}
+              />
           )}/>
       </div>
     )
