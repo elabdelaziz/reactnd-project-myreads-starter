@@ -7,7 +7,7 @@ const UpdateShelf = (props) => {
     }
     return ( 
         <div className="book-shelf-changer">
-            <select onChange={updateShelfApi} defaultValue={'move'}>
+            <select onChange={updateShelfApi} defaultValue={book.shelf}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>

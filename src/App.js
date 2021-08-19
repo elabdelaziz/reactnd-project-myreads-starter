@@ -3,7 +3,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import  Search  from './search'
 import CategoryRows from './categoryRows'
-import {Route} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import ErrorBoundary from './errorBoundary'
 
 class BooksApp extends React.Component {
@@ -28,7 +28,6 @@ class BooksApp extends React.Component {
     }
     else {
       BooksAPI.search(this.state.searchedQuery, 20).then(queryBook => {
-        // console.log(displayedBooks)
         queryBook.error?
         this.setState({ displayedBooks: [], displayError: true }) :
         this.setState({ displayedBooks:  queryBook, displayError: false})
@@ -58,14 +57,16 @@ class BooksApp extends React.Component {
           <Route exact path='/' render={() => (
             <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
           )}/>
-          <Route path='/search' render={() => (
+          <Route exact path='/search' render={() => (
+            <ErrorBoundary>
               <Search onFilterTextChange={this.handleFilterTextChange}
               displayedBooks={this.state.displayedBooks} 
               changeShelf={this.requestShelfUpdate}
               searchedQuery={this.props.searchedQuery}
               displayError={this.state.displayError}
               />
-          )}/>
+            </ErrorBoundary>
+            )}/>
       </div>
     )
   }

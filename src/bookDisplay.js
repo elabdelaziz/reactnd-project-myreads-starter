@@ -9,7 +9,7 @@ const BookDisplay = (props) => {
     }
     const bookName = book.title
     const bookImg = book.imageLinks.thumbnail
-    const authors = book.authors
+    const bookAuthors = book.authors
 
     return (
         <li key={book.id}>
@@ -19,11 +19,9 @@ const BookDisplay = (props) => {
                 <UpdateShelf book={book} changeShelf={changeShelf}/>
             </div>
               <div className="book-title">{bookName}</div>
-              {authors.map((author, id) => (
+              {bookAuthors.map((author, id) => (
                   <div className="book-authors" key={id}>{author}</div>
               ))}
-              
-            
           </div>
         </li>
     );
