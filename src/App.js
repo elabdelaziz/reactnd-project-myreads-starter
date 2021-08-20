@@ -35,14 +35,15 @@ class BooksApp extends React.Component {
         }
         else {
           this.state.books.forEach(book => (
-            queryBook.filter(element => (
-              element.id === book.id
-            )).map(b => b.shelf = book.shelf)
+            queryBook.forEach(element => {
+              if(element.id === book.id) {
+                element.shelf = book.shelf
+              }
+            })
           ))
           queryBook.filter(element => (
             !element.shelf || element.shelf === undefined
           )).map(b => b.shelf = 'none')
-          
           this.setState({ displayedBooks:  queryBook, displayError: false})
         }
         
