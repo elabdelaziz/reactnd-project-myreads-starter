@@ -3,8 +3,9 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import  Search  from './search'
 import CategoryRows from './categoryRows'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import ErrorBoundary from './errorBoundary'
+import NoMatch from './noMatch'
 
 class BooksApp extends React.Component {
   state = {
@@ -28,9 +29,23 @@ class BooksApp extends React.Component {
     }
     else {
       BooksAPI.search(this.state.searchedQuery, 20).then(queryBook => {
-        queryBook.error?
-        this.setState({ displayedBooks: [], displayError: true }) :
-        this.setState({ displayedBooks:  queryBook, displayError: false})
+        // console.log(queryBook)
+        if (this.state.displayedBooks.error) {
+          this.setState({ displayedBooks: [], displayError: true })
+        }
+        else {
+          this.state.books.forEach(book => (
+            queryBook.filter(element => (
+              element.id === book.id
+            )).map(b => b.shelf = book.shelf)
+          ))
+          queryBook.filter(element => (
+            !element.shelf || element.shelf === undefined
+          )).map(b => b.shelf = 'none')
+          
+          this.setState({ displayedBooks:  queryBook, displayError: false})
+        }
+        
 
         !this.state.searchedQuery && this.setState({ displayedBooks: [], displayError: false })
         
@@ -54,19 +69,22 @@ class BooksApp extends React.Component {
   render() {
     return (
         <div className="app">
-          <Route exact path='/' render={() => (
-            <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
-          )}/>
-          <Route exact path='/search' render={() => (
-            <ErrorBoundary>
-              <Search onFilterTextChange={this.handleFilterTextChange}
-              displayedBooks={this.state.displayedBooks} 
-              changeShelf={this.requestShelfUpdate}
-              searchedQuery={this.props.searchedQuery}
-              displayError={this.state.displayError}
-              />
-            </ErrorBoundary>
+          <Switch>
+            <Route exact path='/' render={() => (
+              <CategoryRows books={this.state.books} changeShelf={this.requestShelfUpdate}/>
             )}/>
+            <Route exact path='/search' render={() => (
+              <ErrorBoundary>
+                <Search onFilterTextChange={this.handleFilterTextChange}
+                displayedBooks={this.state.displayedBooks} 
+                changeShelf={this.requestShelfUpdate}
+                searchedQuery={this.props.searchedQuery}
+                displayError={this.state.displayError}
+                />
+              </ErrorBoundary>
+              )}/>
+              <Route component={NoMatch}/>
+            </Switch>
       </div>
     )
   }

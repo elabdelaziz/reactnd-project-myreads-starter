@@ -19,9 +19,7 @@ const BookDisplay = (props) => {
                 <UpdateShelf book={book} changeShelf={changeShelf}/>
             </div>
               <div className="book-title">{bookName}</div>
-              {bookAuthors.map((author, id) => (
-                  <div className="book-authors" key={id}>{author}</div>
-              ))}
+              <div className="book-authors">{bookAuthors.join(', ')}</div>
           </div>
         </li>
     );
